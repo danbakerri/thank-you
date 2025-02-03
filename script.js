@@ -11,11 +11,6 @@ const smoother = ScrollSmoother.create({
   preventDefault: true,
 });
 
-gsap.set(".heading", {
-  yPercent: 50,
-  opacity: 1,
-});
-
 let tl = gsap.timeline();
 let mySplitText = new SplitText("#split-stagger", { type: "words,chars" });
 let chars = mySplitText.chars;
@@ -23,3 +18,38 @@ let chars = mySplitText.chars;
 chars.forEach((char, i) => {
   smoother.effects(char, { speed: 1, lag: (i + 1) * 0.1 });
 });
+
+let split, tln;
+
+const createSplit = () => {
+  split && split.revert();
+  tln && tln.revert();
+  split = new SplitText("p", {
+    type: "chars",
+  });
+
+  tln = gsap
+    .timeline({
+      scrollTrigger: {
+        trigger: "#textSection",
+        start: "top top",
+        end: "+=150%",
+        pin: true,
+        scrub: 0.75,
+        markers: false,
+      },
+    })
+    .set(
+      split.chars,
+      {
+        color: "#ffcc66",
+        stagger: 0.1,
+      },
+
+      0.1
+    );
+};
+createSplit();
+const debouncer = gsap.delayedCall(0.2, createSplit).pause();
+
+window.addEventListener("resize", () => debouncer.restart(true));
