@@ -24,7 +24,7 @@ let split, tln;
 const createSplit = () => {
   split && split.revert();
   tln && tln.revert();
-  split = new SplitText("p", {
+  split = new SplitText(".white", {
     type: "chars",
   });
 
@@ -39,10 +39,11 @@ const createSplit = () => {
         markers: false,
       },
     })
+
     .set(
       split.chars,
       {
-        color: "#ffcc66",
+        color: "#fffc51",
         stagger: 0.1,
       },
 
@@ -53,3 +54,5 @@ createSplit();
 const debouncer = gsap.delayedCall(0.2, createSplit).pause();
 
 window.addEventListener("resize", () => debouncer.restart(true));
+
+Splitting();
